@@ -1,0 +1,135 @@
+<<<<<<< HEAD
+# For VM deploy only: frontend uses pre-pulled image (no build). Nginx builds from ./nginx.
+services:
+  frontend:
+    container_name: studioapp-frontend-saas1
+    image: ${FRONTEND_IMAGE}
+    restart: unless-stopped
+    ports:
+      - "3053:3053"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3053/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - studioapp-net-saas1
+
+  nginx:
+    container_name: studioapp-nginx-saas1
+    image: ${NGINX_IMAGE:-studioapp-nginx-saas1:latest}
+    restart: unless-stopped
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        APP_PORT: 3053
+        HTTP_PORT: 80
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - app_name=studioapp-frontend-saas1
+      - app_port=3053
+    volumes:
+      - ${SSL_CERTS_PATH:-./certs}:/etc/nginx/ssl:ro
+    depends_on:
+      frontend:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:80/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - studioapp-net-saas1
+
+networks:
+  studioapp-net-saas1:
+    driver: bridge
+=======
+# For VM deploy only: frontend uses pre-pulled image (no build). Nginx builds from ./nginx.
+services:
+  frontend:
+    container_name: studioapp-frontend-saas1
+    image: ${FRONTEND_IMAGE}
+    restart: unless-stopped
+    ports:
+      - "3053:3053"
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3053/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - studioapp-net-saas1
+
+  nginx:
+    container_name: studioapp-nginx-saas1
+    image: ${NGINX_IMAGE:-studioapp-nginx-saas1:latest}
+    restart: unless-stopped
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        APP_PORT: 3053
+        HTTP_PORT: 80
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - app_name=studioapp-frontend-saas1
+      - app_port=3053
+    volumes:
+      - ${SSL_CERTS_PATH:-./certs}:/etc/nginx/ssl:ro
+    depends_on:
+      frontend:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:80/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - studioapp-net-saas1
+
+networks:
+  studioapp-net-saas1:
+    driver: bridge
+>>>>>>> 22b0267a21511be5230e2e8a7fbb8f3f2d788d52
