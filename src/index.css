@@ -237,4 +237,85 @@
 .scrollbar-thin::-webkit-scrollbar { width: 6px; }
 .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
 .scrollbar-thin::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 3px; }
+
+/* ── Marketing Site Animations (SaaS1) ─────────────────── */
+@keyframes nx-fade-up {
+  0%   { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.nx-fade-up {
+  opacity: 0;
+  animation: nx-fade-up 0.9s cubic-bezier(.22,.8,.28,1) forwards;
+}
+.nx-delay-1 { animation-delay: 0.08s; }
+.nx-delay-2 { animation-delay: 0.18s; }
+.nx-delay-3 { animation-delay: 0.28s; }
+.nx-delay-4 { animation-delay: 0.38s; }
+.nx-delay-5 { animation-delay: 0.48s; }
+.nx-delay-6 { animation-delay: 0.58s; }
+
+@keyframes nx-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.nx-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: nx-marquee 32s linear infinite;
+}
+.nx-marquee-pause:hover .nx-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes nx-pulse-ring {
+  0%   { transform: scale(0.6); opacity: 0.9; }
+  70%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+.nx-pin-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: nx-pulse-ring 2.4s ease-out infinite;
+}
+
+@keyframes nx-gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.nx-gradient-text {
+  background: linear-gradient(90deg, #7c3aed, #6366f1, #8b5cf6, #a855f7, #7c3aed);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: nx-gradient-shift 7s ease-in-out infinite;
+}
+
+@keyframes nx-blob {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(30px, -20px) scale(1.08); }
+  66%  { transform: translate(-20px, 25px) scale(0.96); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+.nx-blob { animation: nx-blob 18s ease-in-out infinite; }
+
+@keyframes nx-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.nx-float { animation: nx-float 6s ease-in-out infinite; }
+
+@keyframes nx-spin-slow {
+  to { transform: rotate(360deg); }
+}
+.nx-spin-slow { animation: nx-spin-slow 18s linear infinite; }
+
+@keyframes nx-bar-grow {
+  from { height: 0%; }
+}
+.nx-bar { animation: nx-bar-grow 1.2s cubic-bezier(.22,.8,.28,1) both; }
 .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
